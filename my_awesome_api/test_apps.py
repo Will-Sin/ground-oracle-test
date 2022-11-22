@@ -1,8 +1,8 @@
 import random
-
+import os
 import openai
 
-openai.api_key = "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"
+openai.api_key = os.environ.get("OPENAI_KEY")
 
 
 def prompt_selection():

@@ -36,8 +36,8 @@ def prompt_selection():
 
     prompt_4 = "Translate the following text into a story. Talk about the Moon, the Book and GROUND. \n\nYou: This speculative documentary is set in a lush landscape in Canada during the Post-Everything, an unknown year following 2022, after people worked through natural, technological, and health issues to reach a new equilibrium. This new equilibrium also includes the relations between humans, artificial intelligences, flora, and fauna. As new species appeared, their boundaries blurred to be more permeable and flexible, this means that, possibly, some humans are also animals.\nOracle: One evening, a clever man, Huojia went to fetch some water from the well. To his surprise, when he looked into the well, he found the moon sunk in the well shining. 'Oh, good Heavens, what a pity! The beautiful moon has dropped into the well!' So he dashed home for a hook, and tied it with the rope for his bucket, then put it into the well to fish for the moon.\n\nYou:"
 
-    prompts = [prompt_1, prompt_4]
-    random_index1 = random.randint(0, 1)
+    prompts = [prompt_1]
+    random_index1 = random.randint(0, 0)
     prompt_select = prompts[random_index1]
 
     prompt_preamble_select = ""

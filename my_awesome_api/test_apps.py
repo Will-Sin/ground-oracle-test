@@ -65,7 +65,7 @@ def chat_response(chat_input, chat_history):
     Returns text as string
     """
     models = ["curie:ft-personal-2022-10-05-14-18-07", "text-davinci-002"]
-    random_index1 = 0
+    random_index1 = random.randint(0, 1)
 
     # Select prompt to base the interaction off. Here I should indicate that a first interaction should be prompt 1.
     initial_prompt, preamble = prompt_selection()

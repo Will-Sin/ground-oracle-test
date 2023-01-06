@@ -1,6 +1,7 @@
 from django.db import models
 
 from django.db import models
+from treebeard.mp_tree import MP_Node
 
 
 class Book(models.Model):
@@ -15,3 +16,16 @@ class Book(models.Model):
 class Prompts(models.Model):
     prompt_1 = models.TextField()
     prompt_2 = models.TextField()
+
+
+"""
+USER: Inquiry, Chat_History
+RECEIVES: Response, Chat_History
+
+BOOK:
+    Book ID
+    USER:
+        User ID
+        Chat History
+     
+"""

@@ -87,12 +87,14 @@ WSGI_APPLICATION = 'firstproject.wsgi.application'
     }
 }
 """
+MySQLPassword = os.environ.get('MYSQL_PASSWORD')
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'nftjoseph$OracleSQL',
         'USER': 'nftjoseph',
-        'PASSWORD': os.environ.get('MYSQL_PASSWORD'),
+        'PASSWORD': MySQLPassword,
         'HOST': 'nftjoseph.mysql.pythonanywhere-services.com',
     }
 }

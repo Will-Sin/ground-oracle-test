@@ -16,8 +16,8 @@ class BookViewSet(viewsets.ModelViewSet):
 
 # accepts PUT request and returns a custom response
 class BookPostView(APIView):
-    def put(self, request, book_number, scenario, username):
-        # Inputed text from user
+    def put(self, request, book_number, scenario,):
+        # Inputted text from user
         current_inquiry = request.data.get('book').get('current_inquiry')
 
         # SQL Object associated with Book Number inputed by user
@@ -29,12 +29,12 @@ class BookPostView(APIView):
         # return Response(serializer_class.data)
 
         # Calling GPT and returning response
-        # gpt_response, new_chat_history = chat_response(current_inquiry, chat_history)
+        gpt_response, new_chat_history = chat_response(current_inquiry, chat_history)
 
         # Edits chat_history on SQL Object, and then saves to database
-        #book_object.chat_history = new_chat_history
-        #book_object.save()
+        entry_object.chat_history = new_chat_history
+        entry_object.save()
 
-        # return Response({"gpt response": f"{gpt_response}", "chat history": f"{chat_history}"})
+        return Response({"gpt response": f"{gpt_response}", "chat history": f"{chat_history}"})
 
-        return Response({"chat history": f"{chat_history}"})
+        # return Response({"chat history": f"{chat_history}"})

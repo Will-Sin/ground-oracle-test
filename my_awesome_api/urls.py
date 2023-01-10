@@ -18,5 +18,5 @@ app_name = "book"
 
 # app_name will help us do a reverse look-up latter.
 urlpatterns = [
-    path('book/<int:book_number>/<int:scenario>/<str:username>/', BookPostView.as_view()),
+    path('book/<int:book_number>/<int:scenario>/', BookPostView.as_view()),
 ]

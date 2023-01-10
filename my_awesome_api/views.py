@@ -1,7 +1,6 @@
 from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from django.http import JsonResponse
 
 from .serializers import BookSerializer
 from .models import Book

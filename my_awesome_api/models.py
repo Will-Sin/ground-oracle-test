@@ -1,9 +1,5 @@
 from django.db import models
 
-from django.db import models
-from treebeard.mp_tree import MP_Node
-
-
 class Book(models.Model):
     book_number = models.IntegerField()
     scenario_number = models.IntegerField()

@@ -89,13 +89,13 @@ def chat_response(chat_input, chat_history, scenario):
         stop=["You:"]
     )
 
-    trimed_response = (response['choices'][0]['text'])
+    trimmed_response = (response['choices'][0]['text'])
 
-    chat_history += trimed_response
+    chat_history += trimmed_response
     # Always append the chat_history with the users "User:" so that the next response can begin off it.
     new_chat_history = chat_history + "\nYou:"
 
-    return trimed_response, new_chat_history
+    return trimmed_response, new_chat_history
 
 
 """test_text = "Hi Oracle. Helping the moon was a strange time. I felt like there was no end. They kept on asking and asking, and we’d give and give. But for what I’m not sure. Anyways, we’ve left them yet I keep thinking back to why they were there, who were they? I guess I feel unsettled about thinking about myself as the moon. Lost and wanting."

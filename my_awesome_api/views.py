@@ -28,7 +28,7 @@ class BookPostView(APIView):
         # return Response(serializer_class.data)
 
         # Calling GPT and returning response
-        gpt_response, new_chat_history = chat_response(current_inquiry, chat_history)
+        gpt_response, new_chat_history = chat_response(current_inquiry, chat_history, scenario)
 
         # Edits chat_history on SQL Object, and then saves to database
         entry_object.chat_history = new_chat_history

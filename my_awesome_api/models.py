@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Book(models.Model):
-    book_number = models.IntegerField()
+    book_number = models.TextField()
     chat_history = models.TextField()
 
 

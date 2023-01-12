@@ -1,6 +1,7 @@
 import random
 import os
 import openai
+from transformers import GPT2TokenizerFast
 
 openai.api_key = os.environ.get("OPENAI_KEY")
 
@@ -37,6 +38,29 @@ def prompt_selection(scenario):
     return prompt_select
 
 
+def chat_history_length(initial_prompt, chat_history):
+    """
+    Function to check if an API request will be larger than 3000 tokens. If it is, the chat history will need to be trimmed.
+
+    :param initial_prompt:
+    :param chat_history:
+    :return:
+    """
+    full_prompt = initial_prompt + chat_history
+
+    tokenizer = GPT2TokenizerFast.from_pretrained("gpt2")
+    n_tokens = len(tokenizer.encode(full_prompt))
+
+    if n_tokens >= 3000:
+        location = chat_history.find("You:")
+        chat_history = chat_history[location + 4:]
+        full_prompt = initial_prompt + chat_history
+
+        return full_prompt
+    else:
+        return full_prompt
+
+
 def chat_response(chat_input, chat_history, scenario):
     """
     Inputs text from user
@@ -52,11 +76,7 @@ def chat_response(chat_input, chat_history, scenario):
     # Select prompt to base the interaction off. Here I should indicate that a first interaction should be prompt 1.
     initial_prompt = prompt_selection(scenario)
 
-    # Need a method to express whether there is a chat_history or not
-    if len(chat_history) != 0:
-        full_prompt = initial_prompt + chat_history
-    else:
-        full_prompt = initial_prompt
+    full_prompt = chat_history_length(initial_prompt, chat_history)
 
     # Always append the full_prompt with the Oracles "Name:" so that the response will compelete from that character.
     full_prompt += chat_input + "\nOracle:"

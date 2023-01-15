@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import BookPostView
+from .views import BookPostView, ScenarioScriptView
 
 '''
 router = routers.DefaultRouter()
@@ -18,4 +18,5 @@ app_name = "book"
 # app_name will help us do a reverse look-up latter.
 urlpatterns = [
     path('book/<str:book_number>/<int:scenario>/', BookPostView.as_view()),
+    path('script/<str:book_number>/<int:scenario>/', ScenarioScriptView.as_view())
 ]

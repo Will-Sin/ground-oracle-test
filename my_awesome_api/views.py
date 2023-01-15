@@ -4,7 +4,7 @@ from rest_framework.response import Response
 
 from .serializers import BookSerializer
 from .models import Book
-from .test_apps import chat_response
+from .test_apps import chat_response, scenario_script
 
 
 # ModelViewSet will handle GET and POST for Heroes without us having to do any more work.
@@ -37,3 +37,20 @@ class BookPostView(APIView):
         return Response({"gpt response": f"{gpt_response}", "chat history": f"{chat_history}"})
 
         # return Response({"chat history": f"{chat_history}"})
+
+
+class ScenarioScriptView(APIView):
+    def put(self, request, book_number, scenario,):
+        entry_object = Book.objects.get(book_number=book_number)
+        next_scenario = entry_object.next_scenario
+
+        if next_scenario == scenario:
+            script = scenario_script(next_scenario)
+
+            # Updates next_scenario entry for next response
+            entry_object.next_scenario = next_scenario + 1
+            entry_object.save()
+
+            return Response({"scenario_script": f"{script}"})
+        else:
+            return Response({"scenario_script": "400"})

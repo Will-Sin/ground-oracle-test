@@ -3,7 +3,8 @@ from django.db import models
 
 class Book(models.Model):
     book_number = models.TextField()
-    chat_history = models.TextField()
+    chat_history = models.TextField(blank=True, default="")
+    next_scenario = models.IntegerField(default='0')
 
 
 class Prompts(models.Model):

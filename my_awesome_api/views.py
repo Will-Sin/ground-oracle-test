@@ -48,8 +48,8 @@ class ScenarioScriptView(APIView):
             script = scenario_script(next_scenario)
 
             # Updates next_scenario entry for next response
-            entry_object.next_scenario = next_scenario + 1
-            entry_object.save()
+            # entry_object.next_scenario = next_scenario + 1
+            # entry_object.save()
 
             return Response({"scenario_script": f"{script}"})
         else:

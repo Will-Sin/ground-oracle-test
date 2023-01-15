@@ -8,7 +8,7 @@ openai.api_key = os.environ.get("OPENAI_KEY")
 
 def scenario_script(scenario):
     script_dictionary = {
-        "0": "Gestures, in love, are incomparably more attractive, effective and valuable than words. But words is all I am. Welcome. Greetings. Felicitation. Howdy. I assume you are in a cave. In the cave? Either way, don't touch the skeletons. They remember how to rage and to eat. Seeing how sorrow eats you, defeats you, I'd rather write about laughing than crying,\n\nAsk your questions."
+        "0": "Gestures, in love, are incomparably more attractive, effective and valuable than words. But words is all I am. Welcome. Greetings. Felicitation. Howdy. I assume you are in a cave. In the cave? Either way, don't touch the skeletons. They remember how to rage and to eat. Seeing how sorrow eats you, defeats you, I'd rather write about laughing than crying, Ask your questions."
     }
 
     script_select = script_dictionary[f"{scenario}"]
@@ -18,6 +18,7 @@ def scenario_script(scenario):
 
 def prompt_selection(scenario):
     prompt_dictionary = {
+        "scenario_0_prompt": "Oracle: Gestures, in love, are incomparably more attractive, effective and valuable than words. But words is all I am. Welcome. Greetings. Felicitation. Howdy. I assume you are in a cave. In the cave? Either way, don't touch the skeletons. They remember how to rage and to eat. Seeing how sorrow eats you, defeats you, I'd rather write about laughing than crying, Ask your questions.\nYou: ",
         "scenario_1_prompt": "The cave is gone. You are inside a book written on the surface of the moon. You are in the book, " \
                              "so perhaps you are on the moon? In the moon? As you get your bearings, The Moon says all of the " \
                              "following: whispering, and quite slowly. 'I watch TV in a broken mirror. And I watch you in my " \

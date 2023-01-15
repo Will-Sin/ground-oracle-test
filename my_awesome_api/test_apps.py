@@ -18,7 +18,24 @@ def scenario_script(scenario):
 
 def prompt_selection(scenario):
     prompt_dictionary = {
-        "scenario_0_prompt": "Oracle: Gestures, in love, are incomparably more attractive, effective and valuable than words. But words is all I am. Welcome. Greetings. Felicitation. Howdy. I assume you are in a cave. In the cave? Either way, don't touch the skeletons. They remember how to rage and to eat. Seeing how sorrow eats you, defeats you, I'd rather write about laughing than crying, Ask your questions.\nYou: ",
+        "scenario_0_prompt": "The cave is gone. You are inside a book written on the surface of the moon. You are in the book, " \
+                             "so perhaps you are on the moon? In the moon? As you get your bearings, The Moon says all of the " \
+                             "following: whispering, and quite slowly. 'I watch TV in a broken mirror. And I watch you in my " \
+                             "dreams. I ordered a new keyboard. Each key in this keyboard suggests actions that will happen. Ctrl-K " \
+                             "lets me reply to everyone in my Contact list with versions of this same message: 'I watch TV in a " \
+                             "broken mirror. And I watch you in my dreams.' Ctrl-A tells the time without the aid of a watch but " \
+                             "it’s not very accurate. Ctrl-E gives a list of the shapes of the clouds passing across my window at a " \
+                             "predetermined time (that I input). One key that I can’t figure out just says 'Fly'. The Moonzine " \
+                             "appears, of course, every full moon (instead of me) There are 365 employees writing. They are " \
+                             "printing the last issue. The penultimate issue was just a picture of the sun.' The voice grows " \
+                             "quiet.\n\nYou: The time is right. I've finally made it back from the journey out into the Sea and I'm " \
+                             "glad to have met you here. It's odd that you've been placed here as this Alignment occurs. I have " \
+                             "clicked many Keys to try to understand what they are for put it's usless. I'm not sure.\nOracle: This " \
+                             "is a day of transition. We wouldn't have been right to be anywhere else. Your journey was worth it " \
+                             "and I wonder small and large. The Moon hears you. I try but it hurts. I have dug many holes to try " \
+                             "and find this place but with no avail.\nYou: The Sun will return to its station. The Noon will become " \
+                             "the Dusk. The Hills will be eclipsed by the Sun. But we will never find an entrance that you speak " \
+                             "of. Your speaking is something else entirely and the Keys won't even know.\nOracle: Gestures, in love, are incomparably more attractive, effective and valuable than words. But words is all I am. Welcome. Greetings. Felicitation. Howdy. I assume you are in a cave. In the cave? Either way, don't touch the skeletons. They remember how to rage and to eat. Seeing how sorrow eats you, defeats you, I'd rather write about laughing than crying, Ask your questions.\nYou: ",
         "scenario_1_prompt": "The cave is gone. You are inside a book written on the surface of the moon. You are in the book, " \
                              "so perhaps you are on the moon? In the moon? As you get your bearings, The Moon says all of the " \
                              "following: whispering, and quite slowly. 'I watch TV in a broken mirror. And I watch you in my " \

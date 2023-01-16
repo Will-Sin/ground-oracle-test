@@ -121,8 +121,8 @@ def chat_response(chat_input, chat_history, scenario):
         temperature=0.9,
         max_tokens=256,
         top_p=1,
-        frequency_penalty=0,
-        presence_penalty=0,
+        frequency_penalty=1.5,
+        presence_penalty=1.0,
         stop=["You:"]
     )
 

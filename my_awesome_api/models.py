@@ -21,6 +21,7 @@ class User(models.Model):
     book_number = models.TextField(blank=True, default="")
     interactions_available = models.IntegerField(default='0')
     next_scenario = models.IntegerField(default='0')
+    file = models.FileField(blank=True, null=False)
 
 
 class PackageForm(models.Model):

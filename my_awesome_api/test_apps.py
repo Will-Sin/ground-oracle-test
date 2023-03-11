@@ -2,6 +2,10 @@ import random
 import os
 import openai
 from transformers import GPT2TokenizerFast
+import speech_recognition as sr
+from os import path
+import time
+import soundfile
 
 openai.api_key = os.environ.get("OPENAI_KEY")
 
@@ -43,7 +47,7 @@ def chat_history_length(initial_prompt, chat_history):
     tokenizer = GPT2TokenizerFast.from_pretrained("gpt2")
     n_tokens = len(tokenizer.encode(full_prompt))
 
-    if n_tokens >= 3000:
+    if n_tokens >= 1600:
         location = chat_history.find("Travelers:")
         chat_history = chat_history[location + 4:]
         full_prompt = initial_prompt + chat_history
@@ -84,7 +88,7 @@ def chat_response(chat_input, chat_history, full_chat_history, scenario):
         model="curie:ft-personal:carnivalesque-v5-2023-01-31-15-56-36",
         prompt=f"{full_prompt}",
         temperature=0.85,
-        max_tokens=700,
+        max_tokens=400,
         top_p=1,
         frequency_penalty=1,
         presence_penalty=1,
@@ -99,6 +103,53 @@ def chat_response(chat_input, chat_history, full_chat_history, scenario):
 
     return trimmed_response, chat_history, full_chat_history
 
+
+def sst(audio_file):
+    r = sr.Recognizer()
+
+    with sr.AudioFile(audio_file) as source:
+        audio = r.record(source)
+
+        # recognize_() method will throw a request error if the API is unreachable, hence using exception handling
+        try:
+            # using google speech recognition
+            text = r.recognize_google(audio)
+
+            # text = r.recognize_google(audio_text, language = "de-DE")
+            text = f'{text}'
+
+            return text
+
+        except sr.UnknownValueError:
+
+            print("Google Speech Recognition could not understand audio")
+
+        except sr.RequestError as e:
+
+            print("Could not request results from Google Speech Recognition service; {0}".format(e))
+
+
+def stt_main(file_name):
+    # file_name = '/media/recording_uwrk7z8'
+    audio_file_path = path.join(path.dirname(path.realpath(__file__)), f"..{file_name}")
+
+    data, samplerate = soundfile.read(audio_file_path)
+
+    new_audio_file_path = path.join(path.dirname(path.realpath(__file__)), f"..{file_name[:-4]}.wav")
+
+    soundfile.write(new_audio_file_path, data, samplerate, subtype='PCM_16')
+
+    while not os.path.exists(new_audio_file_path):
+        time.sleep(1)
+
+    text = sst(new_audio_file_path)
+    print(text)
+
+    return text
+
+
+# newtext = stt_main('/media/recording.wav')
+# print(newtext)
 
 """test_text = "Hi Oracle. Helping the moon was a strange time. I felt like there was no end. They kept on asking and asking, and we’d give and give. But for what I’m not sure. Anyways, we’ve left them yet I keep thinking back to why they were there, who were they? I guess I feel unsettled about thinking about myself as the moon. Lost and wanting."
 a, b = chat_response(test_text, test_text)

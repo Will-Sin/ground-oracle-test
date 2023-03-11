@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import BookPostView, ScenarioScriptView, PresenterPackageFormView
+from .views import BookPostView, ScenarioScriptView, PresenterPackageFormView, FileView
 
 '''
 router = routers.DefaultRouter()
@@ -19,5 +19,6 @@ app_name = "book"
 urlpatterns = [
     path('book/<str:book_number>/<str:user_cave>/<int:scenario>/', BookPostView.as_view()),
     path('script/<str:book_number>/<str:user_cave>/<int:scenario>/', ScenarioScriptView.as_view()),
-    path('form/', PresenterPackageFormView.as_view())
+    path('form/', PresenterPackageFormView.as_view()),
+    path('upload/<str:book_number>/<str:user_cave>/<int:scenario>/', FileView.as_view(), name='file-upload'),
 ]

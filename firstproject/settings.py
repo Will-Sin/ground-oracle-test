@@ -80,7 +80,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'firstproject.wsgi.application'
 
-"""
+
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 DATABASES = {
@@ -101,7 +101,7 @@ DATABASES = {
         'HOST': 'nftjoseph.mysql.pythonanywhere-services.com',
     }
 }
-
+"""
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

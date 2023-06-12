@@ -6,7 +6,7 @@ import speech_recognition as sr
 from os import path
 import time
 import soundfile
-from pydub import AudioSegment
+#from pydub import AudioSegment
 import os
 
 

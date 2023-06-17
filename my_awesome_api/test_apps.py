@@ -99,7 +99,9 @@ def chat_response(chat_input, chat_history, full_chat_history, scenario):
         n=3
     )
 
-    trimmed_response_list_all = response['choices']
+
+    for i in response['choices']
+        trimmed_response_list_all = i['text']
 
     trimmed_response_list = []
 

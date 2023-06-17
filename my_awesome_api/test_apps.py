@@ -6,9 +6,8 @@ import speech_recognition as sr
 from os import path
 import time
 import soundfile
-#from pydub import AudioSegment
+# from pydub import AudioSegment
 import os
-
 
 openai.api_key = os.environ.get("OPENAI_KEY")
 
@@ -99,8 +98,7 @@ def chat_response(chat_input, chat_history, full_chat_history, scenario):
         n=3
     )
 
-
-    for i in response['choices']
+    for i in response['choices']:
         trimmed_response_list_all = i['text']
 
     trimmed_response_list = []
@@ -164,8 +162,8 @@ def stt_main(file_name):
     audio.export(output_file_path, **output_parameters)
 
     # We need to capture the data and samplerate of our audio file, and create a new file with a new subtype because gtts cannot read it currently.
-    #data, samplerate = soundfile.read(audio_file_path)
-    #soundfile.write(new_audio_file_path, data, samplerate, subtype='PCM_16')
+    # data, samplerate = soundfile.read(audio_file_path)
+    # soundfile.write(new_audio_file_path, data, samplerate, subtype='PCM_16')
 
     # takes a bit of time to save the new file
     while not os.path.exists(output_file_path):
@@ -175,6 +173,7 @@ def stt_main(file_name):
     print(text)
 
     return text
+
 
 """test_text = "Hi Oracle. Helping the moon was a strange time. I felt like there was no end. They kept on asking and asking, and we’d give and give. But for what I’m not sure. Anyways, we’ve left them yet I keep thinking back to why they were there, who were they? I guess I feel unsettled about thinking about myself as the moon. Lost and wanting."
 a, b = chat_response(test_text, test_text)

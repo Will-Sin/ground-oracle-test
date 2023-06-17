@@ -98,10 +98,12 @@ def chat_response(chat_input, chat_history, full_chat_history, scenario):
         n=3
     )
     trimmed_response_list_all = []
+    j = 0
     trimmed_response_list = []
 
     for i in response['choices']:
-        trimmed_response_list_all += response['choices']
+        j += 1
+        trimmed_response_list_all += i[j]['text']
 
     for i in range(3):
         if len(trimmed_response_list_all[i]) > 50:

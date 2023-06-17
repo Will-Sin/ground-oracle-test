@@ -103,7 +103,7 @@ def chat_response(chat_input, chat_history, full_chat_history, scenario):
 
     trimmed_response_list = []
 
-    for i in trimmed_response_list_all:
+    for i in range(3):
         if len(trimmed_response_list_all[i]) > 50:
             trimmed_response_list += trimmed_response_list_all[i]
 

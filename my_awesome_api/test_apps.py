@@ -90,15 +90,28 @@ def chat_response(chat_input, chat_history, full_chat_history, scenario):
     response = openai.Completion.create(
         model="davinci:ft-ukai-projects:carnivalesque-v6-2023-06-06-13-36-42",
         prompt=f"{full_prompt}",
-        temperature=0.85,
+        temperature=1,
         max_tokens=400,
         top_p=1,
         frequency_penalty=1,
         presence_penalty=1,
-        stop=["END", ":", "Travelers:", "Oracle:"]
+        stop=["END", ":", "Travelers:", "Oracle:", "\n"],
+        n=3
     )
 
-    trimmed_response = (response['choices'][0]['text'])
+    trimmed_response_list_all = (response['choices'][0]['text'])
+
+    trimmed_response_list = []
+
+    for i in trimmed_response_list_all:
+        if len(trimmed_response_list_all[i]) >= 50:
+            trimmed_response_list += trimmed_response_list_all[i]
+
+    print(trimmed_response_list_all)
+    print(trimmed_response_list)
+
+    random_index2 = random.randint(0, len(trimmed_response_list) - 1)
+    trimmed_response = trimmed_response_list[random_index2]
 
     # Always append the chat_history with the users "User:" so that the next response can begin off it.
     chat_history += trimmed_response + "\nTravelers:"

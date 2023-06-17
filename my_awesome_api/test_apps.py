@@ -69,7 +69,7 @@ def chat_response(chat_input, chat_history, full_chat_history, scenario):
     Returns text. Shouldn't need to be trimmed.
     Returns text as string
     """
-    models = ["curie:ft-personal:carnivalesque-v5-2023-01-31-15-56-36"]
+    models = ["davinci:ft-ukai-projects:carnivalesque-v6-2023-06-06-13-36-42"]
     random_index1 = random.randint(0, len(models) - 1)
 
     # Select prompt to base the interaction off. Here I should indicate that a first interaction should be prompt 1.
@@ -88,7 +88,7 @@ def chat_response(chat_input, chat_history, full_chat_history, scenario):
         chat_history += " " + preamble"""
 
     response = openai.Completion.create(
-        model="curie:ft-personal:carnivalesque-v5-2023-01-31-15-56-36",
+        model="davinci:ft-ukai-projects:carnivalesque-v6-2023-06-06-13-36-42",
         prompt=f"{full_prompt}",
         temperature=0.85,
         max_tokens=400,

@@ -98,8 +98,10 @@ def chat_response(chat_input, chat_history, full_chat_history, scenario):
         n=3
     )
     trimmed_response_list_all = []
-    j = 0
+    j = 1
     trimmed_response_list = []
+
+    print(response)
 
     for i in response['choices']:
         trimmed_response_list_all.append(i[j]['text'])

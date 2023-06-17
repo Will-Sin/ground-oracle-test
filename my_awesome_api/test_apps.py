@@ -1,5 +1,4 @@
 import random
-import os
 import openai
 from transformers import GPT2TokenizerFast
 import speech_recognition as sr
@@ -8,8 +7,55 @@ import time
 import soundfile
 # from pydub import AudioSegment
 import os
+import datetime
 
 openai.api_key = os.environ.get("OPENAI_KEY")
+
+
+def choose_element_by_time():
+    current_time = datetime.datetime.now(datetime.timezone.utc)
+    est_timezone = datetime.timezone(datetime.timedelta(hours=-5))
+
+    # Define time ranges for each element
+    time_ranges = {
+        "davinci:ft-ukai-projects:carnivalesque-v6-2023-06-06-13-36-42": [(datetime.time(9, 0, 0), datetime.time(12, 0, 0)), (datetime.time(13, 0, 0), datetime.time(6, 0, 0))],  # Element 1 time ranges
+        "curie:ft-personal:carnivalesque-v2-2022-12-11-19-01-33": [(datetime.time(12, 0, 0), datetime.time(13, 0, 0))]  # Element 2 time ranges
+    }
+
+    current_time_est = current_time.astimezone(est_timezone).time()
+
+    # Choose element based on the current time range
+    chosen_element = None
+    for element, ranges in time_ranges.items():
+        for start_time, end_time in ranges:
+            if start_time <= current_time_est <= end_time:
+                chosen_element = element
+                break
+        if chosen_element:
+            break
+
+    return chosen_element
+
+
+def complete_paragraph(string):
+    sentence_endings = {'.', '!', '?'}
+
+    # Remove trailing whitespace
+    string = string.strip()
+
+    # Check if the string ends with sentence-ending punctuation
+    if string[-1] not in sentence_endings:
+        # Find the last occurrence of sentence-ending punctuation
+        last_punctuation_index = max(string.rfind(p) for p in sentence_endings)
+
+        # Remove the unfinished sentence if found
+        if last_punctuation_index != -1:
+            string = string[:last_punctuation_index + 1]
+        else:
+            # If no sentence-ending punctuation is found, add a period at the end
+            string += '.'
+
+    return string
 
 
 def scenario_script(scenario):
@@ -68,8 +114,8 @@ def chat_response(chat_input, chat_history, full_chat_history, scenario):
     Returns text. Shouldn't need to be trimmed.
     Returns text as string
     """
-    models = ["davinci:ft-ukai-projects:carnivalesque-v6-2023-06-06-13-36-42"]
-    random_index1 = random.randint(0, len(models) - 1)
+
+    chosen_model = choose_element_by_time()
 
     # Select prompt to base the interaction off. Here I should indicate that a first interaction should be prompt 1.
     initial_prompt = prompt_selection(scenario)
@@ -87,7 +133,7 @@ def chat_response(chat_input, chat_history, full_chat_history, scenario):
         chat_history += " " + preamble"""
 
     response = openai.Completion.create(
-        model="davinci:ft-ukai-projects:carnivalesque-v6-2023-06-06-13-36-42",
+        model=chosen_model,
         prompt=f"{full_prompt}",
         temperature=1,
         max_tokens=400,
@@ -115,6 +161,8 @@ def chat_response(chat_input, chat_history, full_chat_history, scenario):
 
     random_index2 = random.randint(0, len(trimmed_response_list) - 1)
     trimmed_response = trimmed_response_list[random_index2]
+
+    trimmed_response = complete_paragraph(trimmed_response)
 
     # Always append the chat_history with the users "User:" so that the next response can begin off it.
     chat_history += trimmed_response + "\nTravelers:"

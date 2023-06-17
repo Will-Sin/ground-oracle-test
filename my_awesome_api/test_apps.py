@@ -95,7 +95,7 @@ def chat_response(chat_input, chat_history, full_chat_history, scenario):
         top_p=1,
         frequency_penalty=1,
         presence_penalty=1,
-        stop=["END", ":", "Travelers:", "Oracle:", "\n"],
+        stop=[":", "Travelers:", "Oracle:", "\n"],
         n=3
     )
 

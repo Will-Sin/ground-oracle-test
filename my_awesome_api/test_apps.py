@@ -105,7 +105,7 @@ def chat_response(chat_input, chat_history, full_chat_history, scenario):
 
     for i in response['choices']:
         print(i)
-        trimmed_response_list_all.append(i['text'].copy)
+        trimmed_response_list_all.append(i['text'])
         j += 1
 
     for i in range(3):

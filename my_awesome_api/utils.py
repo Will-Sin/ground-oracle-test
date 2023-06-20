@@ -26,8 +26,6 @@ def check_book_number(code):
                     return True
     return False
 
-a = check_book_number("aaaa")
-print(a)
 
 def choose_element_by_time():
     current_time = datetime.datetime.now(datetime.timezone.utc)
@@ -77,7 +75,7 @@ def complete_paragraph(string):
 
 def scenario_script(scenario):
     script_dictionary = {
-        "INTRO": "Gestures, in love, are incomparably more attractive, effective and valuable than words. But words is all I am. Welcome. Greetings. Felicitation. Howdy. I assume you are in a cave. In the cave? Either way, don't touch the skeletons. They remember how to rage and to eat. Seeing how sorrow eats you, defeats you, I'd rather write about laughing than crying, Ask your questions."
+        "0": "Gestures, in love, are incomparably more attractive, effective and valuable than words. But words is all I am. Welcome. Greetings. Felicitation. Howdy. I assume you are in a cave. In the cave? Either way, don't touch the skeletons. They remember how to rage and to eat. Seeing how sorrow eats you, defeats you, I'd rather write about laughing than crying, Ask your questions."
     }
 
     script_select = script_dictionary[f"{scenario}"]

@@ -8,10 +8,9 @@ from rest_framework import status
 from .serializers import BookSerializer, UserSerializer
 from .models import Book, User, PackageForm
 from .utils import chat_response, scenario_script, stt_main, check_book_number
-from random import seed, randint
 
 
-# ModelViewSet will handle GET and POST for Heroes without us having to do any more work.
+# ModelViewSet will handle GET and POST without us having to do any more work.
 class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer()
@@ -49,6 +48,12 @@ class BookPostView(APIView):
         chat_history = entry_book_object.chat_history
         full_chat_history = entry_book_object.full_chat_history
         previous_interactions = entry_user_object.interactions_available
+
+        # If the Book ID is 4 characters, its for Carnival so give them 4 interactions with the Oracle
+        # This should either be turned into its own view (A carnival view?) or put somewhere else.
+        if len(book_number) == 4:
+            # Add 3 entries for speaking to the Oracle
+            entry_user_object.interactions_available = 3
 
         # Searlizer for returning full SQL Object
         # serializer_class = BookSerializer(entry_object)

@@ -11,6 +11,18 @@ import datetime
 
 openai.api_key = os.environ.get("OPENAI_KEY")
 
+txt_files = ["CARNIVAL_IDS.txt", "BOOK_IDS.txt"]
+
+
+def check_book_number(code):
+    for file_name in txt_files:
+        with open(file_name, 'r') as file:
+            for line in file:
+                if line.strip() == code:
+                    return True
+    return False
+
+
 
 def choose_element_by_time():
     current_time = datetime.datetime.now(datetime.timezone.utc)
@@ -60,7 +72,7 @@ def complete_paragraph(string):
 
 def scenario_script(scenario):
     script_dictionary = {
-        "0": "Gestures, in love, are incomparably more attractive, effective and valuable than words. But words is all I am. Welcome. Greetings. Felicitation. Howdy. I assume you are in a cave. In the cave? Either way, don't touch the skeletons. They remember how to rage and to eat. Seeing how sorrow eats you, defeats you, I'd rather write about laughing than crying, Ask your questions."
+        "INTRO": "Gestures, in love, are incomparably more attractive, effective and valuable than words. But words is all I am. Welcome. Greetings. Felicitation. Howdy. I assume you are in a cave. In the cave? Either way, don't touch the skeletons. They remember how to rage and to eat. Seeing how sorrow eats you, defeats you, I'd rather write about laughing than crying, Ask your questions."
     }
 
     script_select = script_dictionary[f"{scenario}"]

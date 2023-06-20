@@ -7,7 +7,7 @@ from rest_framework import status
 
 from .serializers import BookSerializer, UserSerializer
 from .models import Book, User, PackageForm
-from .test_apps import chat_response, scenario_script, stt_main
+from .utils import chat_response, scenario_script, stt_main, check_book_number
 from random import seed, randint
 
 
@@ -24,10 +24,18 @@ class BookPostView(APIView):
     def put(self, request, book_number, user_cave, scenario, ):
         # if / else statement to check if the combined CAVE and Book Number exists (i.e. if a user has created a profile
         # yet.) It will either get the SQL object, or create one.
-        if User.objects.filter(book_number=book_number, cave=user_cave).exists():
-            entry_user_object = User.objects.get(book_number=book_number, cave=user_cave)
+
+        if not check_book_number(book_number):
+            response_object = {
+                "Book ID": "Invalid"
+            }
+
+            return Response(response_object)
         else:
-            entry_user_object = User.objects.create(book_number=book_number, cave=user_cave)
+            if User.objects.filter(book_number=book_number, cave=user_cave).exists():
+                entry_user_object = User.objects.get(book_number=book_number, cave=user_cave)
+            else:
+                entry_user_object = User.objects.create(book_number=book_number, cave=user_cave)
 
         # Retrieves the inputted text from the user.
         inputed_text = request.data.get('book').get('current_inquiry')
@@ -89,10 +97,17 @@ class ScenarioScriptView(APIView):
 
         # if / else statement to check if the combined CAVE and Book Number exists (i.e. if a user has created a profile
         # yet.) It will either get the SQL object, or create one.
-        if User.objects.filter(book_number=book_number, cave=user_cave).exists():
-            entry_object = User.objects.get(book_number=book_number, cave=user_cave)
+        if not check_book_number(book_number):
+            response_object = {
+                "Book ID": "Invalid"
+            }
+
+            return Response(response_object)
         else:
-            entry_object = User.objects.create(book_number=book_number, cave=user_cave)
+            if User.objects.filter(book_number=book_number, cave=user_cave).exists():
+                entry_object = User.objects.get(book_number=book_number, cave=user_cave)
+            else:
+                entry_object = User.objects.create(book_number=book_number, cave=user_cave)
 
         # Gathers the variables from the SQL object. Next scenario indicates what scenario is up next for the user.
         # Example: if the user enters Scenario 2 on the front end, and the variable next_scenario from the SQL object is

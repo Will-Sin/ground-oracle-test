@@ -11,7 +11,7 @@ import datetime
 
 openai.api_key = os.environ.get("OPENAI_KEY")
 
-txt_files = ["CARNIVAL_IDS.txt", "BOOK_IDS.txt"]
+txt_files = ["../CARNIVAL_IDS.txt", "../BOOK_IDS.txt"]
 
 
 def check_book_number(code):

@@ -8,10 +8,14 @@ import soundfile
 # from pydub import AudioSegment
 import os
 import datetime
+from pathlib import Path
+
+
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 openai.api_key = os.environ.get("OPENAI_KEY")
 
-txt_files = ["../CARNIVAL_IDS.txt", "../BOOK_IDS.txt"]
+txt_files = [BASE_DIR / "CARNIVAL_IDS.txt", BASE_DIR / "BOOK_IDS.txt"]
 
 
 def check_book_number(code):
@@ -22,7 +26,8 @@ def check_book_number(code):
                     return True
     return False
 
-
+a = check_book_number("aaaa")
+print(a)
 
 def choose_element_by_time():
     current_time = datetime.datetime.now(datetime.timezone.utc)

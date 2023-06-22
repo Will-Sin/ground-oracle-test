@@ -8,6 +8,7 @@ from rest_framework import status
 from .serializers import BookSerializer, UserSerializer
 from .models import Book, User, PackageForm
 from .utils import chat_response, scenario_script, stt_main, check_book_number
+from django.core.exceptions import ObjectDoesNotExist
 
 # ModelViewSet will handle GET and POST without us having to do any more work.
 class BookViewSet(viewsets.ModelViewSet):
@@ -30,10 +31,9 @@ class BookPostView(APIView):
 
             return Response(response_object)
         else:
-            try:
-                # Query for the object
+            if User.objects.filter(book_number=book_number, cave=user_cave).exists():
                 entry_user_object = User.objects.get(book_number=book_number, cave=user_cave)
-            except Book.DoesNotExist:
+            else:
                 entry_user_object = User.objects.create(book_number=book_number, cave=user_cave)
 
         # Retrieves the inputted text from the user.

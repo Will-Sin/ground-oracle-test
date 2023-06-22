@@ -33,8 +33,8 @@ def choose_element_by_time():
 
     # Define time ranges for each element
     time_ranges = {
-        "davinci:ft-ukai-projects:carnivalesque-v6-2023-06-06-13-36-42": [(datetime.time(9, 0, 0), datetime.time(12, 0, 0)), (datetime.time(13, 0, 0), datetime.time(6, 0, 0))],  # Element 1 time ranges
-        "curie:ft-personal:carnivalesque-v2-2022-12-11-19-01-33": [(datetime.time(12, 0, 0), datetime.time(13, 0, 0))]  # Element 2 time ranges
+        "davinci:ft-ukai-projects:carnivalesque-v6-2023-06-06-13-36-42": [(datetime.time(0, 0, 1), datetime.time(12, 0, 0)), (datetime.time(13, 0, 1), datetime.time(5, 0, 0))],  # Element 1 time ranges
+        "curie:ft-personal:carnivalesque-v2-2022-12-11-19-01-33": [(datetime.time(12, 0, 1), datetime.time(13, 0, 0)), (datetime.time(5, 0, 1), datetime.time(24, 0, 0))]  # Element 2 time ranges
     }
 
     current_time_est = current_time.astimezone(est_timezone).time()
@@ -170,6 +170,10 @@ def chat_response(chat_input, chat_history, full_chat_history, scenario):
         if len(trimmed_response_list_all[i]) > 50:
             print(trimmed_response_list_all[i])
             trimmed_response_list.append(trimmed_response_list_all[i])
+
+    # if all api responses were less than 50 characters an empty list will be returned. Run the API call again.
+    if len(trimmed_response_list) == 0:
+        return chat_response(chat_input, chat_history, full_chat_history, scenario)
 
     print(trimmed_response_list_all)
     print(trimmed_response_list)

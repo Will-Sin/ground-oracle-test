@@ -124,9 +124,9 @@ class ScenarioScriptView(APIView):
 
                 # If the Book ID is 4 characters, its for Carnival so give them 4 interactions with the Oracle
                 # This should either be turned into its own view (A carnival view?) or put somewhere else.
-                if len(book_number) == 4:
+                # if len(book_number) == 4:
                     # Add 3 entries for speaking to the Oracle
-                    entry_user_object.interactions_available = 3
+                entry_user_object.interactions_available = 3
 
         # Gathers the variables from the SQL object. Next scenario indicates what scenario is up next for the user.
         # Example: if the user enters Scenario 2 on the front end, and the variable next_scenario from the SQL object is

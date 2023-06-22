@@ -41,6 +41,12 @@ class BookPostView(APIView):
                 entry_book_object = Book.objects.create(book_number=book_number)
                 entry_user_object = User.objects.create(book_number=book_number, cave=user_cave)
 
+                # If the Book ID is 4 characters, its for Carnival so give them 4 interactions with the Oracle
+                # This should either be turned into its own view (A carnival view?) or put somewhere else.
+                if len(book_number) == 4:
+                    # Add 3 entries for speaking to the Oracle
+                    entry_user_object.interactions_available = 3
+
 
         # Retrieves the inputted text from the user.
         inputed_text = request.data.get('book').get('current_inquiry')
@@ -51,12 +57,6 @@ class BookPostView(APIView):
         chat_history = entry_book_object.chat_history
         full_chat_history = entry_book_object.full_chat_history
         previous_interactions = entry_user_object.interactions_available
-
-        # If the Book ID is 4 characters, its for Carnival so give them 4 interactions with the Oracle
-        # This should either be turned into its own view (A carnival view?) or put somewhere else.
-        if len(book_number) == 4:
-            # Add 3 entries for speaking to the Oracle
-            entry_user_object.interactions_available = 3
 
         # Searlizer for returning full SQL Object
         # serializer_class = BookSerializer(entry_object)
@@ -112,16 +112,27 @@ class ScenarioScriptView(APIView):
 
             return Response(response_object)
         else:
-            if User.objects.filter(book_number=book_number, cave=user_cave).exists():
-                entry_object = User.objects.get(book_number=book_number, cave=user_cave)
-            else:
-                entry_object = User.objects.create(book_number=book_number, cave=user_cave)
+            try:
+                entry_book_object = Book.objects.get(book_number=book_number)
+                try:
+                    entry_user_object = User.objects.get(book_number=book_number, cave=user_cave)
+                except User.DoesNotExist:
+                    entry_user_object = User.objects.create(book_number=book_number, cave=user_cave)
+            except Book.DoesNotExist:
+                entry_book_object = Book.objects.create(book_number=book_number)
+                entry_user_object = User.objects.create(book_number=book_number, cave=user_cave)
+
+                # If the Book ID is 4 characters, its for Carnival so give them 4 interactions with the Oracle
+                # This should either be turned into its own view (A carnival view?) or put somewhere else.
+                if len(book_number) == 4:
+                    # Add 3 entries for speaking to the Oracle
+                    entry_user_object.interactions_available = 3
 
         # Gathers the variables from the SQL object. Next scenario indicates what scenario is up next for the user.
         # Example: if the user enters Scenario 2 on the front end, and the variable next_scenario from the SQL object is
         # 1, that means the user is now playing on a new scenario, and will be prompted with Oracle script if needed.
-        next_scenario = entry_object.next_scenario
-        interactions_available = entry_object.interactions_available
+        next_scenario = entry_user_object.next_scenario
+        interactions_available = entry_user_object.interactions_available
 
         # Define the standard response object for this call that will be returned to the front end.
         response_object = {
@@ -137,8 +148,8 @@ class ScenarioScriptView(APIView):
         # will be added to the response object if there is a script available, this is called through the
         # scenario_scription() function. Otherwise, the text "no script needed" will be returned in the response object.
         if next_scenario == scenario:
-            entry_object.next_scenario = next_scenario + 1
-            entry_object.save()
+            entry_user_object.next_scenario = next_scenario + 1
+            entry_user_object.save()
 
             response_object['scenario_script'] = f"{scenario_script(next_scenario)}"
         else:

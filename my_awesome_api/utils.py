@@ -34,7 +34,7 @@ def choose_element_by_time():
     # Define time ranges for each element
     time_ranges = {
         "davinci:ft-ukai-projects:carnivalesque-v6-2023-06-06-13-36-42": [(datetime.time(0, 0, 1), datetime.time(12, 0, 0)), (datetime.time(13, 0, 1), datetime.time(5, 0, 0))],  # Element 1 time ranges
-        "curie:ft-personal:carnivalesque-v2-2022-12-11-19-01-33": [(datetime.time(12, 0, 1), datetime.time(13, 0, 0)), (datetime.time(5, 0, 1), datetime.time(24, 0, 0))]  # Element 2 time ranges
+        "curie:ft-personal:carnivalesque-v2-2022-12-11-19-01-33": [(datetime.time(12, 0, 1), datetime.time(13, 0, 0)), (datetime.time(5, 0, 1), datetime.time(23, 59, 59))]  # Element 2 time ranges
     }
 
     current_time_est = current_time.astimezone(est_timezone).time()

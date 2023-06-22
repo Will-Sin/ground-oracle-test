@@ -31,8 +31,8 @@ class BookPostView(APIView):
 
             return Response(response_object)
         else:
-            if Book.objects.get(book_number=book_number).exists():
-                if User.objects.filter(book_number=book_number, cave=user_cave).exists():
+            if Book.objects.get(book_number=book_number).first():
+                if User.objects.filter(book_number=book_number, cave=user_cave).first():
                     entry_user_object = User.objects.get(book_number=book_number, cave=user_cave)
                 else:
                     entry_user_object = User.objects.create(book_number=book_number, cave=user_cave)

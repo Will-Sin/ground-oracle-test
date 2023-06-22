@@ -31,16 +31,17 @@ class BookPostView(APIView):
 
             return Response(response_object)
         else:
-            if User.objects.filter(book_number=book_number, cave=user_cave).exists():
-                entry_user_object = User.objects.get(book_number=book_number, cave=user_cave)
+            if Book.objects.get(book_number=book_number).exists():
+                if User.objects.filter(book_number=book_number, cave=user_cave).exists():
+                    entry_user_object = User.objects.get(book_number=book_number, cave=user_cave)
+                else:
+                    entry_user_object = User.objects.create(book_number=book_number, cave=user_cave)
             else:
+                entry_book_object = Book.objects.create(book_number=book_number)
                 entry_user_object = User.objects.create(book_number=book_number, cave=user_cave)
 
         # Retrieves the inputted text from the user.
         inputed_text = request.data.get('book').get('current_inquiry')
-
-        # Gets the SQL Object associated with Book Number inputted by user
-        entry_book_object = Book.objects.get(book_number=book_number)
 
         # Gathers the variables from the SQL object. Chat_history being the trimmed chat history that is in proper
         # length in accordance to the max length of the OpenAI API call. Full_chat_history is the full chat history for

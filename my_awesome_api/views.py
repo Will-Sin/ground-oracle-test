@@ -31,16 +31,16 @@ class BookPostView(APIView):
 
             return Response(response_object)
         else:
-            entry_book_object = Book.objects.get(book_number=book_number)
-            if entry_book_object:
-                entry_user_object = User.objects.filter(book_number=book_number, cave=user_cave)
-                if entry_user_object:
+            try:
+                entry_book_object = Book.objects.get(book_number=book_number)
+                try:
                     entry_user_object = User.objects.get(book_number=book_number, cave=user_cave)
-                else:
+                except User.DoesNotExist:
                     entry_user_object = User.objects.create(book_number=book_number, cave=user_cave)
-            else:
+            except Book.DoesNotExist:
                 entry_book_object = Book.objects.create(book_number=book_number)
                 entry_user_object = User.objects.create(book_number=book_number, cave=user_cave)
+
 
         # Retrieves the inputted text from the user.
         inputed_text = request.data.get('book').get('current_inquiry')

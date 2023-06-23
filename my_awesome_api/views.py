@@ -142,7 +142,8 @@ class ScenarioScriptView(APIView):
         response_object = {
             "response": "",
             "scenario_script": "",
-            "interactions_available": f"{interactions_available}"
+            "interactions_available": f"{interactions_available}",
+            "next_scenario": "",
         }
 
         # Updates the next_scenario variable in the SQL object to show that the user has played this scenario at least
@@ -157,6 +158,7 @@ class ScenarioScriptView(APIView):
             entry_user_object.save()
 
             response_object['scenario_script'] = f"{scenario_script(next_scenario)}"
+            response_object['next_scenario'] = f"{next_scenario}"
 
             # add 3 more interactions for new scenario
             entry_user_object.interactions_available = 3

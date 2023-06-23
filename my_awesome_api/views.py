@@ -140,6 +140,7 @@ class ScenarioScriptView(APIView):
 
         # Define the standard response object for this call that will be returned to the front end.
         response_object = {
+            "response": "",
             "scenario_script": "",
             "interactions_available": f"{interactions_available}"
         }
@@ -156,8 +157,15 @@ class ScenarioScriptView(APIView):
             entry_user_object.save()
 
             response_object['scenario_script'] = f"{scenario_script(next_scenario)}"
+
+            # add 3 more interactions for new scenario
+            entry_user_object.interactions_available = 3
+            entry_user_object.save()
         else:
             response_object['scenario_script'] = "no script needed"
+
+        if scenario > next_scenario:
+            response_object['response'] = "Please select the correct scenario."
 
         return Response(response_object)
 

@@ -118,6 +118,9 @@ class ScenarioScriptView(APIView):
                     entry_user_object = User.objects.get(book_number=book_number, cave=user_cave)
                 except User.DoesNotExist:
                     entry_user_object = User.objects.create(book_number=book_number, cave=user_cave)
+                    entry_user_object.interactions_available = 3
+                    entry_user_object.save()
+
             except Book.DoesNotExist:
                 entry_book_object = Book.objects.create(book_number=book_number)
                 entry_user_object = User.objects.create(book_number=book_number, cave=user_cave)
@@ -127,6 +130,7 @@ class ScenarioScriptView(APIView):
                 # if len(book_number) == 4:
                     # Add 3 entries for speaking to the Oracle
                 entry_user_object.interactions_available = 3
+                entry_user_object.save()
 
         # Gathers the variables from the SQL object. Next scenario indicates what scenario is up next for the user.
         # Example: if the user enters Scenario 2 on the front end, and the variable next_scenario from the SQL object is

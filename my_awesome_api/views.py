@@ -73,9 +73,8 @@ class BookPostView(APIView):
         entry_user_object.save()
 
         # If it was the last response, check if there is a script to append to the last response.
-        next_scenario = entry_user_object.next_scenario
         if new_iteractions == 0:
-            closing_script = scenario_script(next_scenario + 0.2)
+            closing_script = scenario_script(scenario + 0.2)
             if closing_script != "no script available":
                 gpt_response += (" " + closing_script)
 

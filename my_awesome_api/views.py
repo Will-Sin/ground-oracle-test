@@ -75,7 +75,7 @@ class BookPostView(APIView):
         # If it was the last response, check if there is a script to append to the last response.
         next_scenario = entry_user_object.next_scenario
         if new_iteractions == 0:
-            closing_script = scenario_script(next_scenario + ".2")
+            closing_script = scenario_script(next_scenario + 0.2)
             if closing_script != "no script available":
                 gpt_response += (" " + closing_script)
 
@@ -141,7 +141,7 @@ class ScenarioScriptView(APIView):
 
         # Gathers the variables from the SQL object. Next scenario indicates what scenario is up next for the user.
         # Example: if the user enters Scenario 2 on the front end, and the variable next_scenario from the SQL object is
-        # 1, that means the user is now playing on a new scenario, and will be prompted with Oracle script if needed.
+        # 2, that means the user is now playing on a new scenario, and will be prompted with Oracle script if needed.
         next_scenario = entry_user_object.next_scenario
         interactions_available = entry_user_object.interactions_available
 

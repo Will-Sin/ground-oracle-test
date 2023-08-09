@@ -130,13 +130,14 @@ class ScenarioScriptView(APIView):
 
             except Book.DoesNotExist:
                 entry_book_object = Book.objects.create(book_number=book_number)
-                entry_user_object = User.objects.create(book_number=book_number, cave=user_cave, next_scenario=0)
+                entry_user_object = User.objects.create(book_number=book_number, cave=user_cave)
 
                 # If the Book ID is 4 characters, its for Carnival so give them 4 interactions with the Oracle
                 # This should either be turned into its own view (A carnival view?) or put somewhere else.
                 # if len(book_number) == 4:
                     # Add 3 entries for speaking to the Oracle
                 entry_user_object.interactions_available = 3
+                entry_user_object.next_scenario = 0
                 entry_user_object.save()
 
         # Gathers the variables from the SQL object. Next scenario indicates what scenario is up next for the user.

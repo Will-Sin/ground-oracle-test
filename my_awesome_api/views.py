@@ -20,7 +20,7 @@ class BookPostView(APIView):
     """
     Accepts a request from text response from the front end and will return the chat_history, Oracle response and number of interactions available.
     """
-    def put(self, request, book_number, user_cave, scenario, ):
+    def put(self, request, book_number, user_cave, scenario):
         # if / else statement to check if the combined CAVE and Book Number exists (i.e. if a user has created a profile
         # yet.) It will either get the SQL object, or create one.
 
@@ -71,6 +71,13 @@ class BookPostView(APIView):
         new_iteractions = previous_interactions - 1
         entry_user_object.interactions_available = new_iteractions
         entry_user_object.save()
+
+        # If it was the last response, check if there is a script to append to the last response.
+        next_scenario = entry_user_object.next_scenario
+        if new_iteractions == 0:
+            closing_script = scenario_script(next_scenario + ".2")
+            if closing_script != "no script available":
+                gpt_response += (" " + closing_script)
 
         # Edits chat_history on SQL Object, and then saves to database
         entry_book_object.chat_history = new_chat_history

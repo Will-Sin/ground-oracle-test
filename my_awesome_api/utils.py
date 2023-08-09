@@ -75,16 +75,22 @@ def complete_paragraph(string):
 
 def scenario_script(scenario):
     script_dictionary = {
-        "0": "Gestures, in love, are incomparably more attractive, effective and valuable than words. But words is all I am. Welcome. Greetings. Felicitation. Howdy. I assume you are in a cave. In the cave? Either way, don't touch the skeletons. They remember how to rage and to eat. Seeing how sorrow eats you, defeats you, I'd rather write about laughing than crying, Ask your questions.",
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": "",
-        "6": ""
+        "0": "I am the. I am the Oracle. The [NULL] is nothing. To me. GROUND wants to be. Saved. It wants to be seen. You have your three questions so tell me of yourself and let’s get on with it.",
+        "0.2": "Is it you again? Or another you? Doesn’t matter to me though grateful that we’re done with those giant heads. You will rescue it? Tell me why and I will share with you the secrets of the moon.",
+        "1": "I watch TV in a broken mirror. And I watch you in my dreams. Give me an article for the Moonzine and I’ll answer your goddamn questions. The Moon says that we live on fears, but that’s a damn lie. I hope you understand that.",
+        "2": "You seem a lazy lot. I bet you attempted Plantage first. Well, whatever, you’re here now. Tell how it all went done. And I want to feel it. Tell us of your rage and perhaps you might find your body on the other side. You managed to swallow it down, after all.",
+        "3": "Oh, so many compass points. So much moral courage. So much sweat and hair. Sigh. Body is such an inevitable thing, isn’t it? Hmm. You’re in quite the mess, aren’t you? Body is GROUND’s dream. And GROUND. Well, GROUND is a sad, beautiful thing. You are trying to save it, yes? Or perhaps just along for the ride? It wants. GROUND looks out, but from where?  It wants to be saved. It wants to be a point from which others might see the world. It wants, in short, to be whole, to be completed from outside. And to do so? Well, for that, it needs to die, to pass, to be grieved, to be inhabited.  I will save you from GROUND’s dream of dust and fibre and body. But understand that your quest is not to save, but to kill. To leave GROUND’s corpse in a field so that grasses and birds might make it a home, might mourn, so that GROUND can become real.I’m wires and right angles, nothing more. The choice is yours. The [NULL] is water on the fire. To save GROUND demands its completion. Grief is saved for the dead.",
+        "4": "So, do you see what it means to be remembered? To be finalized? GROUND seeks to be a past tense. A was, so that it might be called forward like any other idea. Dead, but a part of the air we breathe. Tell me what you remembered and I’ll share what little knowledge I have.",
+        "5": "I see you took the easy way out. Knowledge is an overrated idea, anyhow. But at least you have a map. GROUND is in the Green, you know. And like all green things, It will resist the end of its story. Wanting to be grieved, to be solved, is a lot easier than dying or getting fixed. Knowing about fire is a lot different than being burned. Tell me what you know and I’ll let you in on whether or not you stand a chance surviving this.",
+        "6": "Now, you hold the world. The story is no longer inhabited by an idea. You remain ‘other’. Do you see the ground beneath? Do you understand why the goat was stolen and why I was made? You have given the gift of uncertainty and despite the outcome of our game, I will do the same for you. Tell me what happened and I will tell you what comes next.",
+        "6.2": "Very well. Not where I would have taken things, but free will and all that. Go to 302 Geary Avenue on October 5, 2023 in Toronto and find the goat there. Our story will continue. Bring with you an offering of beauty, of rage, of body, of faith, of knowledge, or of green and the ground might be seeded. The Oracle repays her debts."
     }
 
-    script_select = script_dictionary[f"{scenario}"]
+    try:
+        script_select = script_dictionary[f"{scenario}"]
+    except KeyError:
+        script_select = "no script available"
+        print(f"There is no script for scenario `{scenario}`.")
 
     return script_select
 
@@ -159,7 +165,7 @@ def chat_response(chat_input, chat_history, full_chat_history, scenario):
         model=chosen_model,
         prompt=f"{full_prompt}",
         temperature=1,
-        max_tokens=400,
+        max_tokens=300,
         top_p=1,
         frequency_penalty=1,
         presence_penalty=1,

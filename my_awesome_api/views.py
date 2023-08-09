@@ -130,7 +130,7 @@ class ScenarioScriptView(APIView):
 
             except Book.DoesNotExist:
                 entry_book_object = Book.objects.create(book_number=book_number)
-                entry_user_object = User.objects.create(book_number=book_number, cave=user_cave)
+                entry_user_object = User.objects.create(book_number=book_number, cave=user_cave, next_scenario=0)
 
                 # If the Book ID is 4 characters, its for Carnival so give them 4 interactions with the Oracle
                 # This should either be turned into its own view (A carnival view?) or put somewhere else.

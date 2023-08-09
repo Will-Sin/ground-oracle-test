@@ -126,6 +126,7 @@ class ScenarioScriptView(APIView):
                 except User.DoesNotExist:
                     entry_user_object = User.objects.create(book_number=book_number, cave=user_cave)
                     entry_user_object.interactions_available = 3
+                    entry_user_object.next_scenario = 0
                     entry_user_object.save()
 
             except Book.DoesNotExist:

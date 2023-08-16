@@ -125,17 +125,16 @@ def chat_history_length(initial_prompt, chat_history):
     n_tokens = len(tokenizer.encode(full_prompt))
     print(str(n_tokens) + "and" + str(len(tokenizer.encode(chat_history))))
 
-    if n_tokens >= 1600:
+    while n_tokens >= 1600:
         location = chat_history.find("Travelers:")
         chat_history = chat_history[location + 4:]
         full_prompt = initial_prompt + chat_history
+        n_tokens = len(tokenizer.encode(full_prompt))
 
         print("Trimmed prompt")
         print(len(tokenizer.encode(full_prompt)))
 
-        return full_prompt
-    else:
-        return full_prompt
+    return full_prompt
 
 
 def chat_response(chat_input, chat_history, full_chat_history, scenario):

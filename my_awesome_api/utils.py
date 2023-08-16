@@ -131,6 +131,7 @@ def chat_history_length(initial_prompt, chat_history):
         full_prompt = initial_prompt + chat_history
 
         print("Trimmed prompt")
+        print(len(tokenizer.encode(full_prompt)))
 
         return full_prompt
     else:

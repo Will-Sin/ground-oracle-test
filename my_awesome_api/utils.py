@@ -123,11 +123,14 @@ def chat_history_length(initial_prompt, chat_history):
 
     tokenizer = GPT2TokenizerFast.from_pretrained("gpt2")
     n_tokens = len(tokenizer.encode(full_prompt))
+    print(str(n_tokens) + "and" + str(len(tokenizer.encode(chat_history))))
 
     if n_tokens >= 1600:
         location = chat_history.find("Travelers:")
         chat_history = chat_history[location + 4:]
         full_prompt = initial_prompt + chat_history
+
+        print("Trimmed prompt")
 
         return full_prompt
     else:
@@ -160,6 +163,8 @@ def chat_response(chat_input, chat_history, full_chat_history, scenario):
     if len(preamble) != 0:
         full_prompt += " " + preamble
         chat_history += " " + preamble"""
+
+    print(full_prompt)
 
     response = openai.Completion.create(
         model=chosen_model,

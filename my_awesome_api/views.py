@@ -151,7 +151,7 @@ class ScenarioScriptView(APIView):
             "response": "",
             "scenario_script": "",
             "interactions_available": f"{interactions_available}",
-            "next_scenario": "",
+            "next_scenario": f"{next_scenario}",
         }
 
         # Updates the next_scenario variable in the SQL object to show that the user has played this scenario at least
@@ -161,17 +161,21 @@ class ScenarioScriptView(APIView):
         # If the scenario selected by the user is equal to the next_scenario variable form the SQL object then a script
         # will be added to the response object if there is a script available, this is called through the
         # scenario_scription() function. Otherwise, the text "no script needed" will be returned in the response object.
+        print("Next saved scenario: " + str(next_scenario))
+        print("Object sent scenario: " + str(scenario))
         if next_scenario == scenario:
             entry_user_object.next_scenario = next_scenario + 1
             entry_user_object.save()
 
             response_object['scenario_script'] = f"{scenario_script(next_scenario)}"
             response_object['next_scenario'] = f"{next_scenario}"
+            response_object['response'] = "New scenario, added 3 interactions."
 
             # add 3 more interactions for new scenario
             entry_user_object.interactions_available = 3
             entry_user_object.save()
         else:
+            response_object['response'] = "no script needed"
             response_object['scenario_script'] = "no script needed"
 
         if int(scenario) > int(next_scenario):

@@ -181,7 +181,7 @@ class ScenarioScriptView(APIView):
             response_object['scenario_script'] = "no script needed"
 
         if int(scenario) > int(next_scenario):
-            response_object['response'] = "Please select the correct scenario."
+            response_object['response'] = "please select the correct scenario."
 
         return Response(response_object)
 

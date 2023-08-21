@@ -168,12 +168,14 @@ class ScenarioScriptView(APIView):
             entry_user_object.save()
 
             response_object['scenario_script'] = f"{scenario_script(next_scenario)}"
-            response_object['next_scenario'] = f"{next_scenario}"
+            response_object['next_scenario'] = f"{next_scenario + 1}"
             response_object['response'] = "New scenario, added 3 interactions."
 
             # add 3 more interactions for new scenario
-            entry_user_object.interactions_available = 3
+            new_interactions_available = 3
+            entry_user_object.interactions_available = new_interactions_available
             entry_user_object.save()
+            response_object['interactions_available'] = f"{new_interactions_available}"
         else:
             response_object['response'] = "no script needed"
             response_object['scenario_script'] = "no script needed"

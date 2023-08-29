@@ -137,7 +137,18 @@ def chat_history_length(initial_prompt, chat_history):
     return full_prompt
 
 
-def chat_response(chat_input, chat_history, full_chat_history, scenario):
+def mobile_check(device_type):
+    """
+    Checks if the device variable that was given by the JSON object indicates desktop or mobile, and returns a token
+    count that will be used for the OpenAI call.
+    """
+    if device_type == "desktop":
+        return 300
+    elif device_type == "mobile":
+        return 140
+
+
+def chat_response(chat_input, chat_history, full_chat_history, scenario, device_type):
     """
     Inputs text from user
     If there's chat history, it will append to prompt
@@ -148,6 +159,10 @@ def chat_response(chat_input, chat_history, full_chat_history, scenario):
     """
 
     chosen_model = choose_element_by_time()
+
+    # Fills the token_length variable with 300 if a desktop or 140 if a mobile. This is because more than 140 tokens
+    # will be too much for a mobile screen. See ground_page.js for more details on this.
+    token_length = mobile_check(device_type)
 
     # Select prompt to base the interaction off. Here I should indicate that a first interaction should be prompt 1.
     initial_prompt = prompt_selection(scenario)
@@ -170,7 +185,7 @@ def chat_response(chat_input, chat_history, full_chat_history, scenario):
         model=chosen_model,
         prompt=f"{full_prompt}",
         temperature=1,
-        max_tokens=300,
+        max_tokens=token_length,
         top_p=1,
         frequency_penalty=1,
         presence_penalty=1,

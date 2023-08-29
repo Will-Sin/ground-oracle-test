@@ -10,6 +10,7 @@ from .models import Book, User, PackageForm
 from .utils import chat_response, scenario_script, stt_main, check_book_number
 from django.core.exceptions import ObjectDoesNotExist
 
+
 # ModelViewSet will handle GET and POST without us having to do any more work.
 class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
@@ -18,9 +19,16 @@ class BookViewSet(viewsets.ModelViewSet):
 
 class BookPostView(APIView):
     """
-    Accepts a request from text response from the front end and will return the chat_history, Oracle response and number of interactions available.
+    Accepts a request from text response from the front end and will return the chat_history, Oracle response and number
+    of interactions available.
     """
+
     def put(self, request, book_number, user_cave, scenario):
+        """
+        Request: JSON object recieved from front end
+        Book_number, User_cave, Scenario: Strings, int, and int respectfully and is received via the URL of the call
+        """
+
         # if / else statement to check if the combined CAVE and Book Number exists (i.e. if a user has created a profile
         # yet.) It will either get the SQL object, or create one.
 
@@ -47,9 +55,9 @@ class BookPostView(APIView):
                     # Add 3 entries for speaking to the Oracle
                     entry_user_object.interactions_available = 3
 
-
-        # Retrieves the inputted text from the user.
+        # Retrieves the inputted text from the user and the JSON object that was sent and is here as the request variable
         inputed_text = request.data.get('book').get('current_inquiry')
+        device_type = request.data.get('book').get('device')
 
         # Gathers the variables from the SQL object. Chat_history being the trimmed chat history that is in proper
         # length in accordance to the max length of the OpenAI API call. Full_chat_history is the full chat history for
@@ -65,7 +73,7 @@ class BookPostView(APIView):
         # This calls the OpenAI function using the users text, the trimmed chat history, full chat history and the
         # corresponding scenario that was given in the request. It returns the GPT response, and the new chat histories.
         gpt_response, new_chat_history, new_full_chat_history = chat_response(inputed_text, chat_history,
-                                                                              full_chat_history, scenario)
+                                                                              full_chat_history, scenario, device_type)
 
         # Removes an interaction available after interacting with the Oracle
         new_iteractions = previous_interactions - 1
@@ -135,7 +143,7 @@ class ScenarioScriptView(APIView):
                 # If the Book ID is 4 characters, its for Carnival so give them 4 interactions with the Oracle
                 # This should either be turned into its own view (A carnival view?) or put somewhere else.
                 # if len(book_number) == 4:
-                    # Add 3 entries for speaking to the Oracle
+                # Add 3 entries for speaking to the Oracle
                 entry_user_object.interactions_available = 3
                 entry_user_object.next_scenario = 0
                 entry_user_object.save()
@@ -180,7 +188,7 @@ class ScenarioScriptView(APIView):
             response_object['response'] = "no script needed"
             response_object['scenario_script'] = "no script needed"
 
-        if int(scenario) > int(next_scenario):
+        if int(scenario) != int(next_scenario):
             response_object['response'] = "Please select the correct scenario."
 
         return Response(response_object)
@@ -264,6 +272,3 @@ class FileView(APIView):
         entry_user_object.save()
 
         return Response(response_object, status=status.HTTP_201_CREATED)
-
-
-

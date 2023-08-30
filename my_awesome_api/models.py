@@ -6,6 +6,9 @@ class Book(models.Model):
     chat_history = models.TextField(blank=True, default="")
     full_chat_history = models.TextField(blank=True, default="")
 
+    def __str__(self):
+        return f"{self.book_number}"
+
 
 class User(models.Model):
     CAVE_OPTIONS = [
@@ -22,6 +25,9 @@ class User(models.Model):
     interactions_available = models.IntegerField(default='0')
     next_scenario = models.IntegerField(default='0')
     file = models.FileField(blank=True, null=False)
+
+    def __str__(self):
+        return f"CAVE: {self.cave}, BOOK: {self.book_number}"
 
 
 class PackageForm(models.Model):

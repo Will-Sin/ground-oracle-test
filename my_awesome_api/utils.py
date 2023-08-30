@@ -13,12 +13,24 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Sets OpenAI API Key from the environment variables.
 openai.api_key = os.environ.get("OPENAI_KEY")
 
+# Sets the variables for the BOOK IDs that will be used throughout utils.py
 txt_files = [BASE_DIR / "CARNIVAL_IDS.txt", BASE_DIR / "BOOK_IDS.txt"]
 
 
 def check_book_number(code):
+    """
+    This function will take a received BOOK ID and cross-check it with the list of BOOK IDS in txt_files
+    It will return true if there is an instance, and false otherwise.
+
+    Called in views.py
+
+    :param code: (string) BOOK ID code from JSON object sent by front end.
+    :return BOOLEAN: (BOOLEAN)
+
+    """
     for file_name in txt_files:
         with open(file_name, 'r') as file:
             for line in file:
@@ -28,6 +40,13 @@ def check_book_number(code):
 
 
 def choose_element_by_time():
+    """
+    This function is called to choose an OpenAI model based on time. In this function, there is a list, time_ranges,
+    which includes two models. Each model includes a time range. Depending on the current time, one of the models will
+    be chosen if the current time falls within one of the times ranges.
+
+    :return chosen_element: (string) The chosen model ID that will be used in an OpenAI API call.
+    """
     current_time = datetime.datetime.now(datetime.timezone.utc)
     est_timezone = datetime.timezone(datetime.timedelta(hours=-5))
 
@@ -53,6 +72,15 @@ def choose_element_by_time():
 
 
 def complete_paragraph(string):
+    """
+    This function is an aid for the response received from the OpenAI API call. Sometimes with our models the response
+    does not end with a punctuation mark, this function will check to see if it does, and if it doesn't, it will
+    add an ending punctuation.
+
+    :param string: (string)
+    :return string: (string)
+    """
+
     sentence_endings = {'.', '!', '?'}
 
     # Remove trailing whitespace
@@ -74,6 +102,18 @@ def complete_paragraph(string):
 
 
 def scenario_script(scenario):
+    """
+    This function is called with a scenario integer and is cross-referenced with the script_dictionary. If there
+    is a script for the received scenario integer it will return a string of it. Whole integers are initial scripts
+    while integers + 0.2 are closing scripts.
+
+    Called in views.py
+
+    :param scenario: (int) views.py will call this function using the scenario int from the JSON object it receives
+                           from the front end. It will append .2 if there are no more interactions available, which
+                           means it needs a closing script.
+    :return script_select: (string)
+    """
     script_dictionary = {
         "0": "I am the. I am the Oracle. The [NULL] is nothing. To me. GROUND wants to be. Saved. It wants to be seen. You have your three questions so tell me of yourself and let’s get on with it.",
         "0.2": "Is it you again? Or another you? Doesn’t matter to me though grateful that we’re done with those giant heads. You will rescue it? Tell me why and I will share with you the secrets of the moon.",
@@ -90,12 +130,18 @@ def scenario_script(scenario):
         script_select = script_dictionary[f"{scenario}"]
     except KeyError:
         script_select = "no script available"
-        print(f"There is no script for scenario `{scenario}`.")
 
     return script_select
 
 
 def prompt_selection(scenario):
+    """
+    This function takes the scenario from the JSON object sent by the front end, and finds the corresponding prompt
+    that is associated with the scenario.
+
+    :param scenario:
+    :return prompt_select: (string)
+    """
     prompt_dictionary = {
         "scenario_0_prompt": "The cave is gone. You are inside a book written on the surface of the moon. You are in the book, so perhaps you are on the moon? In the moon? As you get your bearings, The Moon says all of the following: whispering, and quite slowly. 'I watch TV in a broken mirror. And I watch you in my dreams. I ordered a new keyboard. Each key in this keyboard suggests actions that will happen. One key that I can’t figure out just says 'Fly'. The Moonzine appears, of course, every full moon (instead of me) There are 365 employees writing. They are printing the last issue. The penultimate issue was just a picture of the sun.' The voice grows quiet.\n\nUsing the above text as a prologue to your story, answer the below question by the travelers as the Oracle:\n\nOracle: It’s just ahead. In a red sky and over white hills, it’ll be easy to spot. The portal is in the Sea... It won't let us through but at least someone might get lucky through chance as we depart this cave into legend with you there spiritously depicted on an old wafer with that blue bit of paper stuck around your neck so I will see how long my two friends can make it for...? Likely 'til midnight then huh?\nTravelers: What happens to the Moon once we've gotten trapped in the cave?\nOracle: It is or has been hidden from us in a place of mystery and light. Perhaps behind its reflection when we turn around? It always returns but you feel its presence... somehow, everywhere. \nTravelers:",
         "scenario_1_prompt": "The cave is gone. You are inside a book written on the surface of the moon. You are in the book, so perhaps you are on the moon? In the moon? As you get your bearings, The Moon says all of the following: whispering, and quite slowly. 'I watch TV in a broken mirror. And I watch you in my dreams. I ordered a new keyboard. Each key in this keyboard suggests actions that will happen. One key that I can’t figure out just says 'Fly'. The Moonzine appears, of course, every full moon (instead of me) There are 365 employees writing. They are printing the last issue. The penultimate issue was just a picture of the sun.' The voice grows quiet.\n\nUsing the above text as a prologue to your story, answer the below question by the travelers as the Oracle:\n\nOracle: It’s just ahead. In a red sky and over white hills, it’ll be easy to spot. The portal is in the Sea... It won't let us through but at least someone might get lucky through chance as we depart this cave into legend with you there spiritously depicted on an old wafer with that blue bit of paper stuck around your neck so I will see how long my two friends can make it for...? Likely 'til midnight then huh?\nTravelers: What happens to the Moon once we've gotten trapped in the cave?\nOracle: It is or has been hidden from us in a place of mystery and light. Perhaps behind its reflection when we turn around? It always returns but you feel its presence... somehow, everywhere. \nTravelers:",
@@ -113,7 +159,7 @@ def prompt_selection(scenario):
 
 def chat_history_length(initial_prompt, chat_history):
     """
-    Function to check if an API request will be larger than 3000 tokens. If it is, the chat history will need to be trimmed.
+    Function to check if an API request will be larger than 1600 tokens. If it is, the chat history will need to be trimmed.
 
     :param initial_prompt:
     :param chat_history:
@@ -141,6 +187,9 @@ def mobile_check(device_type):
     """
     Checks if the device variable that was given by the JSON object indicates desktop or mobile, and returns a token
     count that will be used for the OpenAI call.
+
+    :param device_type: (string)
+    :return int: (int)
     """
     if device_type == "desktop":
         return 300
@@ -150,12 +199,20 @@ def mobile_check(device_type):
 
 def chat_response(chat_input, chat_history, full_chat_history, scenario, device_type):
     """
-    Inputs text from user
-    If there's chat history, it will append to prompt
-    Appends Chat_input to the prompt + chat history
-    Send full prompt
-    Returns text. Shouldn't need to be trimmed.
-    Returns text as string
+    This function receives most of its parameters from the JSON object sent from the front end. Its main use is to call
+    the OpenAI API request with parameters from the JSON file, from the SQL database that was called in views.py or
+    using parameters that are determined through various functions it calls in this function.
+
+    Called in views.py
+
+    :param chat_input: (string) Text inputted from user.
+    :param chat_history: (string) Chat history that can be used in the prompt.
+    :param full_chat_history: (string) The chat history that includes the chat_history, and history that has been trimmed.
+    :param scenario: (string) The scenario string.
+    :param device_type: (string) The device type.
+    :return trimmed_response: (string) OpenAI response that has been trimmed to a single response.
+    :return chat_history: (string) New trimmed chat history.
+    :return full_chat_history: (string) New full chat history.
     """
 
     chosen_model = choose_element_by_time()
@@ -225,6 +282,12 @@ def chat_response(chat_input, chat_history, full_chat_history, scenario, device_
 
 
 def sst(audio_file):
+    """
+    This function is for the voice note function that could not be completed because the file received could
+    not be converted to the correct format to then be transcribed. The issue could be solved by converting the file
+    with a paid converter, but it could not be figured out using free python packages. Someone with knowledge
+    around sound file conversion could figure this out.
+    """
     r = sr.Recognizer()
 
     with sr.AudioFile(audio_file) as source:
@@ -250,6 +313,12 @@ def sst(audio_file):
 
 
 def stt_main(file_name):
+    """
+    This function is for the voice note function that could not be completed because the file received could
+    not be converted to the correct format to then be transcribed. The issue could be solved by converting the file
+    with a paid converter, but it could not be figured out using free python packages. Someone with knowledge
+    around sound file conversion could figure this out.
+    """
     # file_name = '/media/recording_uwrk7z8'
     audio_file_path = path.join(path.dirname(path.realpath(__file__)), f"..{file_name}")
 
